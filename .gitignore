@@ -1,4 +1,6 @@
-.env
-db.sqlite3
-venv
+*.env
+*.sqlite3
+venv/
 __pycache__
+.gitignore
+.idea
