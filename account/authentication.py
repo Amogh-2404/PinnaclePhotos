@@ -18,3 +18,15 @@ class EmailAuthBackend:
             return User.objects.get(pk=user_id)
         except User.DoesNotExist:
             return None
+
+from account.models import Profile
+def create_profile(backend, user, *args, **kwargs):
+    """
+    Create user profile for social authentication
+    :param backend:
+    :param user:
+    :param args:
+    :param kwargs:
+    :return:
+    """
+    Profile.objects.get_or_create(user=user)
