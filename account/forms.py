@@ -38,6 +38,8 @@ class UserEditForm(forms.ModelForm):
     class Meta:
         model = get_user_model()
         fields = ['first_name', 'last_name', 'email']
+
+    # To implement field validation
     def clean_email(self):
         data = self.cleaned_data['email']
         qs = User.objects.exclude(
