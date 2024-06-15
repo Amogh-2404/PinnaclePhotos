@@ -19,7 +19,7 @@ class Image(models.Model):
     description = models.TextField(blank=True)
     created = models.DateTimeField(auto_now_add=True)
 
-    user_like = models.ManyToManyField(
+    users_like = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         related_name='images_liked',
         blank=True
