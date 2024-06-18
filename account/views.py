@@ -1,5 +1,5 @@
-from django.contrib.auth import authenticate, login
-from django.shortcuts import render
+from django.contrib.auth import authenticate, get_user_model, login
+from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 from .forms import LoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm
 from django.contrib.auth.decorators import login_required
@@ -98,3 +98,17 @@ def edit(request):
         }
     )
 
+# Follow system and user detail and list views
+User = get_user_model()
+@login_required
+def user_list(request):
+    users = User.objects.filter(is_active=True)
+    # TODO:- Add pagination
+    return render(request,
+                   'account/user/list.html',
+                   {'section':'people', 'users':users})
+
+@login_required
+def user_detail(request, username):
+    user = get_object_or_404(User, username=username, is_active=True)
+    return render(request,'account/user/detail.html',{'section':'people','user':user})
