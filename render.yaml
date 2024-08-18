@@ -12,6 +12,10 @@ services:
     buildCommand: "./build.sh"
     startCommand: "python -m gunicorn bookmarks.asgi:application -k uvicorn.workers.UvicornWorker"
     envVars:
+      - key: GOOGLE_OAUTH2_KEY
+        value: "536911683750-85mngnc50fdih6rfm7flgvkvqtt497rt.apps.googleusercontent.com"
+      - key: GOOGLE_OAUTH2_SECRET
+        value: "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"
       - key: DATABASE_URL
         fromDatabase:
           name: mysitedb
