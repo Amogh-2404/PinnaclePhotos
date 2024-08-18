@@ -87,7 +87,7 @@ WSGI_APPLICATION = 'bookmarks.wsgi.application'
 DATABASES = {
     'default': dj_database_url.config(
         # Replace this value with your local database's connection string.
-        default=f"postgresql://{config('POSTGRES_USER')}:{config('POSTGRES_PASSWORD')}@localhost:5432/{config('POSTGRES_DB')}",
+        default="postgresql://postgres:postgres@localhost:5432/mysite",
         conn_max_age=600
     ),
 
