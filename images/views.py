@@ -14,12 +14,20 @@ import redis
 from django.conf import settings
 # Create your views here.
 
-# connect to redis
-r = redis.Redis(
-    host=settings.REDIS_HOST,
-    port=settings.REDIS_PORT,
-    db=settings.REDIS_DB
-)
+# connect to redis using URL with graceful fallback
+try:
+    r = redis.from_url(getattr(settings, 'REDIS_URL', 'redis://localhost:6379/0'))
+    # test connection early to fail fast in environments where Redis is not available
+    r.ping()
+except Exception:
+    class _DummyRedis:
+        def incr(self, *args, **kwargs):
+            return 0
+        def zincrby(self, *args, **kwargs):
+            return None
+        def zrange(self, *args, **kwargs):
+            return []
+    r = _DummyRedis()
 
 @login_required
 def image_create(request):

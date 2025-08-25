@@ -38,7 +38,7 @@ _Screenshots coming soon …_
 
 1. **Clone & enter the project**
    ```bash
-   git clone https://github.com/your-org/PinnaclePhotos.git
+   git clone https://github.com/Amogh-2404/PinnaclePhotos.git
    cd PinnaclePhotos
    ```
 2. **Create a virtualenv** (Python 3.11+ recommended)

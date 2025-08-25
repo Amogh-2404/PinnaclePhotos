@@ -18,16 +18,21 @@ from django.contrib import admin
 from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic import RedirectView
+import os
 
 urlpatterns = [
+    path('', RedirectView.as_view(url='/account/', permanent=False)),
     path('admin/', admin.site.urls),
     path('account/', include('account.urls')),
     path('social-auth/', include('social_django.urls', namespace='social'), ),
     path('images/', include('images.urls', namespace='images')),
-    path('__debug__/', include('debug_toolbar.urls')),
 ]
+
 if settings.DEBUG:
-    urlpatterns += static(
-        settings.MEDIA_URL,
-        document_root=settings.MEDIA_ROOT
-    )
+    import debug_toolbar
+    urlpatterns += [path('__debug__/', include(debug_toolbar.urls))]
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+elif 'RENDER' in os.environ:
+    # Serve media files on Render (ephemeral; OK for demo)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
