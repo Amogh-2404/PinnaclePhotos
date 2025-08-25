@@ -8,6 +8,7 @@ services:
   - type: redis
     name: mysite-redis
     plan: free
+    ipAllowList: []
 
   - type: web
     plan: free
