@@ -9,6 +9,7 @@
     {% else %}
         <p>Please, use the following form to log-in:</p>
     {% endif %}
+    <p>Don't have an account? <a href="{% url "register" %}">Create one</a>.</p>
     <div class="login-form">
         <form action="{% url "login" %}" method="post">
             {{ form.as_p }}
