@@ -39,12 +39,16 @@ function bookmarkletLaunch() {
     bookmarklet.querySelector('#close').addEventListener('click', function () {
         bookmarklet.style.display = 'none';
     });
-    // Find images in the DOM with the minimum dimensions
-    let images = document.querySelectorAll('img[src$=".jpg"], img[src$=".jpeg"], img[src$=".png"]');
+    // Find images in the DOM with the minimum dimensions and supported extensions
+    let images = document.querySelectorAll('img');
+    const extRe = /\.(?:jpe?g|png|gif|webp)(?:[#?].*)?$/i;
     images.forEach(image => {
+        const url = (image.currentSrc || image.src || '').trim();
+        if (!url || url.startsWith('data:')) { return; }
+        if (!extRe.test(url)) { return; }
         if (image.naturalWidth >= minWidth && image.naturalHeight >= minHeight) {
             var imageFound = document.createElement('img');
-            imageFound.src = image.src;
+            imageFound.src = url;
             imagesFound.append(imageFound);
         }
     });
