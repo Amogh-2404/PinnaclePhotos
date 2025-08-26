@@ -2,9 +2,12 @@
     let bookmarklet_js;
     if (!window.bookmarklet) {
         bookmarklet_js = document.body.appendChild(document.createElement('script'));
-        bookmarklet_js.src = '//127.0.0.1:8000/static/js/bookmarklet.js?r=' + Math.floor(Math.random() * 9999999999999999);
+        {% load static %}
+        bookmarklet_js.src = '//{{ request.get_host }}{% static "js/bookmarklet.js" %}?r='
+            + Math.floor(Math.random() * 9999999999999999)
+            + '&css={% static "css/bookmarklet.css" %}';
         window.bookmarklet = true;
     } else {
-        bookmarkletLaunch();
+        if (typeof bookmarkletLaunch === 'function') { bookmarkletLaunch(); }
     }
 })();
