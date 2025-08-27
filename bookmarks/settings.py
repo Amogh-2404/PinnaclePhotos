@@ -158,10 +158,11 @@ AUTHENTICATION_BACKENDS = [
     'account.authentication.EmailAuthBackend',
 ]
 
-GOOGLE_OAUTH2_KEY = config('GOOGLE_OAUTH2_KEY', default=None)
-GOOGLE_OAUTH2_SECRET = config('GOOGLE_OAUTH2_SECRET', default=None)
+GOOGLE_OAUTH2_KEY = config('GOOGLE_OAUTH2_KEY', default=config('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY', default=None))
+GOOGLE_OAUTH2_SECRET = config('GOOGLE_OAUTH2_SECRET', default=config('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET', default=None))
+# Always enable the backend so the route exists; keys are required at runtime to actually log in
+AUTHENTICATION_BACKENDS.append('social_core.backends.google.GoogleOAuth2')
 if GOOGLE_OAUTH2_KEY and GOOGLE_OAUTH2_SECRET:
-    AUTHENTICATION_BACKENDS.append('social_core.backends.google.GoogleOAuth2')
     SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = GOOGLE_OAUTH2_KEY
     SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = GOOGLE_OAUTH2_SECRET
     # Explicit redirect URI in production to match Google Console
