@@ -164,6 +164,9 @@ if GOOGLE_OAUTH2_KEY and GOOGLE_OAUTH2_SECRET:
     AUTHENTICATION_BACKENDS.append('social_core.backends.google.GoogleOAuth2')
     SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = GOOGLE_OAUTH2_KEY
     SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = GOOGLE_OAUTH2_SECRET
+    # Explicit redirect URI in production to match Google Console
+    if 'RENDER' in os.environ:
+        SOCIAL_AUTH_GOOGLE_OAUTH2_REDIRECT_URI = 'https://photos.ramogh.work/social-auth/complete/google-oauth2/'
 
 SOCIAL_AUTH_PIPELINE = [
     'social_core.pipeline.social_auth.social_details',
@@ -182,12 +185,14 @@ ABSOLUTE_URL_OVERRIDES = {
     'auth.user': lambda u: reverse_lazy('user_detail', args=[u.username])
 }
 
+# Ensure social-auth builds HTTPS callbacks and uses forwarded host behind proxies (Render)
+SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
+USE_X_FORWARDED_HOST = True
+
 if not DEBUG:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-    # Ensure social-auth builds HTTPS callbacks behind the proxy (Render)
-    SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
 
 # Optional: send users back to login on social auth error
 SOCIAL_AUTH_LOGIN_ERROR_URL = '/account/login/'
